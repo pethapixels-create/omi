@@ -1657,6 +1657,12 @@ admission.
 
 | Key | Retired | Reason |
 | --- | --- | --- |
+| `DREAM_HUNT_BACKOFF_MODE` | 2026-11-22 | SCA-3686: Nov 17 retirement ruling; Nov 22 serving readback confirmed shadow defaults and no serving cohort. |
+| `DREAM_HUNT_BACKOFF_MODE_SERVE_PERCENT` | 2026-11-22 | SCA-3686: Nov 17 retirement ruling; Nov 22 serving readback confirmed shadow defaults and no serving cohort. |
+| `DREAM_MATERIAL_BUDGET_MODE` | 2026-11-22 | SCA-3686: Nov 17 retirement ruling; Nov 22 serving readback confirmed shadow defaults and no serving cohort. |
+| `DREAM_MATERIAL_BUDGET_MODE_SERVE_PERCENT` | 2026-11-22 | SCA-3686: Nov 17 retirement ruling; Nov 22 serving readback confirmed shadow defaults and no serving cohort. |
+| `DREAM_PRESCAN_MODE` | 2026-11-22 | SCA-3686: Nov 17 retirement ruling; Nov 22 serving readback confirmed shadow defaults and no serving cohort. |
+| `DREAM_PRESCAN_MODE_SERVE_PERCENT` | 2026-11-22 | SCA-3686: Nov 17 retirement ruling; Nov 22 serving readback confirmed shadow defaults and no serving cohort. |
 | `AUDIO_ARCHIVE_UID_ALLOWLIST` | 2026-11-09 | David flag docket 2026-11-09 (ruling 2): retire ; prod nonempty one-member allowlist (moved to injected cohort) on every reader at 2026-11-09 03:20Z |
 | `AUDIO_CANONICAL_PACKING_ENABLED` | 2026-11-09 | David flag docket 2026-11-09 (ruling 2): retire ; prod unset (code default) on every reader at 2026-11-09 03:20Z |
 | `BATCH_PIPELINE_SHADOW_LANGUAGE_ONLY` | 2026-11-09 | David flag docket 2026-11-09 (ruling 2): retire ; prod false on every reader at 2026-11-09 03:20Z |

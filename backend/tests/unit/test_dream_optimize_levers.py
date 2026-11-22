@@ -360,6 +360,28 @@ def test_no_progress_retirement_keeps_normal_completion(runtime, monkeypatch):
     assert 'no_progress_stop' not in report['levers']
 
 
+def test_finish_without_payload_completes_the_pass(runtime, monkeypatch):
+    limits = SessionLimits(bucket='light', turns=32, tools=32, tokens=400000)
+    _scripted(EvidenceRecords(records(runtime)), limits, monkeypatch)
+    run = Session.run
+
+    async def stop_after_read(session):
+        return True
+
+    async def run_with_early_finish(session, *args, **kwargs):
+        session.after_execute = stop_after_read
+        return await run(session, *args, **kwargs)
+
+    monkeypatch.setattr(Session, 'run', run_with_early_finish)
+    count = []
+    report = asyncio.run(dream_agent.run_pass(UID, turn=_idle_reader(count), dry_run=True))
+
+    assert count == [1]
+    assert report['status'] == 'complete', report
+    assert report['stop_reason'] == 'finished'
+    assert report['summary'] == report['notes'] == ''
+
+
 # --- admission, parking and ordering (Firestore fake) -------------------------------------------
 
 from datetime import datetime, timedelta, timezone  # noqa: E402

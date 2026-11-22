@@ -673,8 +673,6 @@ async def run_session(
                         deadline_seconds=max(1, timeout_seconds - 300),
                     )
                     report['stop_reason'] = result.reason
-                    if result.reason == 'finished' and session.finish is None and progress['fired'] is not None:
-                        report['stop_reason'] = 'no_progress'
             except Exception as exc:
                 stop_code = error_code(exc)
                 provider_stop = bool(session.staged) and (
