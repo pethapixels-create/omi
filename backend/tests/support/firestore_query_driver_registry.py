@@ -163,7 +163,7 @@ BODY_DIGEST = {
     'utils.support.holds._events': '360ff57663deaf3c17c934276f219cce74f4a468dc28c8a1145623524625927e',
     'utils.support.holds._held_deferred_deletes': '612a521045553ef1b02d1eb81aac37a3c63a75c598ce5e99484c007c7c87e878',
     'utils.support.retention._select_conversations': 'f36920350f4e3a557e0e474e8801ae414c21ce67203e0627f7a39ba820243d16',
-    'database.conversations_v3.commit_projection': '1839fb90b6ce564158f484f9608796e98a401dc0b9b0b6222c60fee1d66514ad',
+    'database.conversations_v3.commit_projection': '401042a573dc6cdc6b277b20cafc1e24ac57210987bdaa56f0029e379adb5b84',
     'database.batch_pipeline_conversation_purge_scans._claim': 'faa5dabcf01dc5bd377b2e14a149282aa2db93b2872cdc97a3b756157701532c',
     'database.batch_pipeline_conversation_purge_scans.run_job': '1916be25d4e9d5b8a350a665ae0fce626ccc56f68fc66107e8f4b0bb1243b00e',
     'database.batch_pipeline_store.FirestoreStore.protected_retries': 'b55d2960c94057cb8df9b9cdd2e7728b6af63728bc0a2cb6f5bd333efed443a2',
@@ -2432,6 +2432,12 @@ _add(DriverEntry('database.memories.get_memory_ids', base={'uid': UID}))
 _add(DriverEntry('database.memories.get_memory_ids_for_conversation', base={'uid': UID, 'conversation_id': 'conv-1'}))
 _add(
     DriverEntry(
+        'database.memories.linked_conversation_ids',
+        base={'uid': UID, 'conversation_ids': {'conv-1'}, 'transaction': ref_transaction()},
+    )
+)
+_add(
+    DriverEntry(
         'database.memories.get_non_filtered_memories', base={'uid': UID}, neutrals={'limit': _LIMIT, 'offset': _OFFSET}
     )
 )
@@ -3645,8 +3651,8 @@ for entry in (
     *conversations_v3_entries(),
     CoveredByEntry(
         'database.conversations_v3.commit_projection',
-        covered_by=('database.conversations_v3.merge_donors_have_tasks',),
-        reason='Refinement and live repair use the same bounded donor-task query and write point markers with donor redirects.',
+        covered_by=('database.conversations_v3.merge_donors_have_tasks', 'database.memories.linked_conversation_ids'),
+        reason='Refinement, repair and backfill use the bounded task query. Backfill also scans projected memory links.',
         expect_observed=False,
         body_digest=BODY_DIGEST['database.conversations_v3.commit_projection'],
     ),
